@@ -7,6 +7,10 @@ app.get('/', function (req, res) {
     res.send("Hello Johannesburg");
 });
 
+app.get('/about', function (req, res) {
+    res.send("This is about page");
+});
+
 app.listen(port, function() {
     console.log(`Server started at port ${port}`);
 });
