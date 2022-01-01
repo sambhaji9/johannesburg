@@ -25,9 +25,17 @@ app.get('/about', function (req, res) {
 });
 
 app.get('/list', function (req, res) {
-    fileSys.readFile('./data.json', function (err, data) {
-        console.log(JSON.parse(data));
-        res.status(200).send(JSON.parse(data));
+    MongoClient.connect(db.connection.url, (err, db) => {
+        if (err) throw err;
+
+        var dbo = db.db("johannesburg");
+        dbo.collection("todolist").insertOne({name: "Aaradhya Mane"}, (err, result) => {
+            if (err) throw err;
+            
+            console.log("1 document inserted");
+            res.status(200).send(result);
+            db.close();
+        });
     });
 });
 
