@@ -14,12 +14,13 @@ app.get('/', function (req, res) {
     res.send("Hello Johannesburg");
 });
 
-app.get('/about', function (req, res) {
+app.get('/getTasks', function (req, res) {
     MongoClient.connect(db.connection.url, function (err, db) {
         if (err) throw err;
 
         var dbo = db.db("johannesburg");
         dbo.collection("todolist").find().toArray((err, result) => {
+            console.log(result);
             if (err) throw err;
 
             res.status(200).send(result);
@@ -46,8 +47,6 @@ app.post('/createTask', function (req, res) {
 });
 
 app.put('/updateTask', function (req, res) {
-    req.body.timeStamp = utils.getUnixTimeStamp();
-    
     MongoClient.connect(db.connection.url, (err, db) => {
         if (err) throw err;
 
@@ -59,6 +58,22 @@ app.put('/updateTask', function (req, res) {
 
             res.status(200).send(result);
             console.log("1 document updated");
+            db.close();
+        });
+    });
+});
+
+app.delete('/deleteTask', function (req, res) {
+    MongoClient.connect(db.connection.url, (err, db) => {
+        if (err) throw err;
+
+        var dbo = db.db("johannesburg");
+        var myquery = { "_id": mongodb.ObjectID("61d06e2e67fad2c9cc285545")};
+        dbo.collection("todolist").deleteOne(myquery, (err, result) => {
+            if (err) throw err;
+
+            res.status(200).send(result);
+            console.log("1 document deleted");
             db.close();
         });
     });
