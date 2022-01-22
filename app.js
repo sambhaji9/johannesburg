@@ -8,14 +8,14 @@ var utils = require('./util');
 var port = process.env.PORT || 3000;
 
 // create application/x-www-form-urlencoded bodyParser
-app.use(express.json());
 app.use(function (request, response, next) {
     response.header("Access-Control-Allow-Origin", "*");
     response.header("Content-Type", "application/x-www-form-urlencoded");
     response.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Content-Type, Accept");
     response.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
     next();
- });
+});
+app.use(express.json());
 
 app.get('/', function (req, res) {
     res.send("Hello Johannesburg");
@@ -30,7 +30,7 @@ app.get('/getTasks', function (req, res) {
             console.log(result);
             if (err) throw err;
 
-            res.status(200).send(result);
+            res.status(200).send(JSON.stringify(result));
             db.close();
         });
     });
@@ -58,7 +58,7 @@ app.put('/updateTask', function (req, res) {
         if (err) throw err;
 
         var dbo = db.db("johannesburg");
-        var myquery = { "_id": mongodb.ObjectID("61d06e2e67fad2c9cc285545")};
+        var myquery = { "_id": mongodb.ObjectID("61d06e2e67fad2c9cc285545") };
         var newValues = { $set: { description: "This is updated description 112343636454" } };
         dbo.collection("todolist").updateOne(myquery, newValues, (err, result) => {
             if (err) throw err;
@@ -75,7 +75,7 @@ app.delete('/deleteTask', function (req, res) {
         if (err) throw err;
 
         var dbo = db.db("johannesburg");
-        var myquery = { "_id": mongodb.ObjectID("61d06e2e67fad2c9cc285545")};
+        var myquery = { "_id": mongodb.ObjectID("61d06e2e67fad2c9cc285545") };
         dbo.collection("todolist").deleteOne(myquery, (err, result) => {
             if (err) throw err;
 
