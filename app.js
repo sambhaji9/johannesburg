@@ -9,6 +9,13 @@ var port = process.env.PORT || 3000;
 
 // create application/x-www-form-urlencoded bodyParser
 app.use(express.json());
+app.use(function (request, response, next) {
+    response.header("Access-Control-Allow-Origin", "*");
+    response.header("Content-Type", "application/x-www-form-urlencoded");
+    response.header("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-TypeError, Content-Type, Accept");
+    response.header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
+    next();
+ });
 
 app.get('/', function (req, res) {
     res.send("Hello Johannesburg");
